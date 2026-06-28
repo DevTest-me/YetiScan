@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YetiScan — Sui Intelligence</title>
+  <link rel="icon" type="image/jpeg" href="icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Epilogue:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <img src="icon.jpg" alt="YetiScan" class="nav-icon" />
+      <span class="nav-wordmark">Yeti<span class="accent">Scan</span></span>
+    </a>
+    <div class="nav-right">
+      <span class="nav-badge">Sui Network</span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon theme-icon--dark">☀️</span>
+        <span class="theme-icon theme-icon--light">🌙</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">AI-Powered Blockchain Intelligence</div>
+    <h1 class="hero-title">Understand any Sui token<br/>or contract <em>in seconds</em></h1>
+    <p class="hero-sub">Paste an address. Get plain-English insights — no Move knowledge required.</p>
+
+    <!-- MODE TABS -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="token">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Token Analysis
+      </button>
+      <button class="mode-tab" data-mode="contract">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Contract Explainer
+      </button>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input
+          type="text"
+          id="addressInput"
+          class="search-input"
+          placeholder="Paste a Sui token or contract address..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="clear-btn" id="clearBtn" hidden aria-label="Clear">✕</button>
+        <button class="search-btn" id="scanBtn">
+          <span class="scan-btn-text">Scan</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+      <p class="search-hint" id="searchHint">Enter a Sui token coin type — e.g. <code>0x2::sui::SUI</code></p>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results" id="results" aria-live="polite">
+
+    <!-- IDLE -->
+    <div class="state-idle" id="stateIdle">
+      <div class="idle-icon">
+        <img src="icon.jpg" alt="YetiScan" class="idle-logo" />
+        <div class="idle-ring"></div>
+      </div>
+      <p class="idle-label" id="idleLabel">I'm watching the chain. Try me.</p>
+    </div>
+
+    <!-- LOADING -->
+    <div class="state-loading" id="stateLoading" hidden>
+      <div class="scan-animation">
+        <div class="scan-ring"></div>
+        <img src="icon.jpg" alt="" class="scan-logo" />
+        <div class="scan-line"></div>
+      </div>
+      <p class="loading-label">Scanning the chain<span class="loading-dots"></span></p>
+    </div>
+
+    <!-- ERROR -->
+    <div class="state-error" id="stateError" hidden>
+      <div class="error-icon">⚠️</div>
+      <p class="error-title" id="errorTitle">Address not found</p>
+      <p class="error-msg" id="errorMsg">Check the address and try again.</p>
+    </div>
+
+    <!-- TOKEN RESULTS -->
+    <div class="result-panel" id="tokenResult" hidden>
+      <div class="frost-scan" id="frostScan"></div>
+
+      <div class="result-grid-top">
+
+        <!-- Overview -->
+        <div class="card" id="cardOverview">
+          <div class="card-header">
+            <span class="card-label">Token Overview</span>
+          </div>
+          <div class="token-identity">
+            <div class="token-avatar" id="tokenAvatar">?</div>
+            <div>
+              <div class="token-name" id="tokenName">—</div>
+              <div class="token-symbol" id="tokenSymbol">—</div>
+            </div>
+          </div>
+          <div class="stat-grid">
+            <div class="stat">
+              <span class="stat-label">Total Supply</span>
+              <span class="stat-value" id="tokenSupply">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Decimals</span>
+              <span class="stat-value" id="tokenDecimals">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Holders</span>
+              <span class="stat-value" id="tokenHolders">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Price</span>
+              <span class="stat-value" id="tokenPrice">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Market Cap</span>
+              <span class="stat-value" id="tokenMcap">—</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">
+                Package ID
+                <button class="copy-pkg-btn" id="copyPkgBtn" title="Copy package ID" hidden>⎘</button>
+              </span>
+              <span class="stat-value mono truncate" id="tokenPackage" title="Click to analyse this contract">—</span>
+              <span class="pkg-hint" id="pkgHint" hidden>→ Analyse contract</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust Score -->
+        <div class="card card--score" id="cardScore">
+          <div class="card-header">
+            <span class="card-label">Trust Score</span>
+          </div>
+          <div class="score-ring-wrap">
+            <svg class="score-ring" viewBox="0 0 120 120">
+              <circle class="score-track" cx="60" cy="60" r="50"/>
+              <circle class="score-fill" id="scoreArc" cx="60" cy="60" r="50"
+                stroke-dasharray="314" stroke-dashoffset="314"/>
+            </svg>
+            <div class="score-center">
+              <span class="score-number" id="scoreNumber">—</span>
+              <span class="score-max">/100</span>
+            </div>
+          </div>
+          <div class="score-verdict" id="scoreVerdict">Analyzing...</div>
+          <div class="risk-flags" id="riskFlags"></div>
+        </div>
+
+      </div>
+
+      <!-- Market Activity -->
+      <div class="card" id="cardMarket" hidden>
+        <div class="card-header">
+          <span class="card-label">Market Activity</span>
+          <span class="card-meta">24h snapshot</span>
+        </div>
+        <div class="market-stats">
+          <div class="market-stat">
+            <span class="market-stat-label">24h Volume</span>
+            <span class="market-stat-value" id="tokenVolume">—</span>
+          </div>
+          <div class="market-stat">
+            <span class="market-stat-label">Liquidity</span>
+            <span class="market-stat-value" id="tokenLiquidity">—</span>
+          </div>
+          <div class="market-stat market-stat--buy">
+            <span class="market-stat-label">Buy Pressure</span>
+            <span class="market-stat-value" id="tokenBuys">—</span>
+          </div>
+          <div class="market-stat market-stat--sell">
+            <span class="market-stat-label">Sell Pressure</span>
+            <span class="market-stat-value" id="tokenSells">—</span>
+          </div>
+        </div>
+        <div class="buy-sell-bar-wrap" id="buySellWrap" hidden>
+          <div class="buy-sell-bar">
+            <div class="buy-bar" id="buyBar" style="width:50%"></div>
+            <div class="sell-bar" id="sellBar" style="width:50%"></div>
+          </div>
+          <div class="buy-sell-labels">
+            <span style="color:var(--safe)">Buys</span>
+            <span style="color:var(--danger)">Sells</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Holder Distribution -->
+      <div class="card" id="cardHolders">
+        <div class="card-header">
+          <span class="card-label">Holder Distribution</span>
+          <span class="card-meta" id="holderMeta">Top 10 wallets</span>
+        </div>
+        <div class="holder-bars" id="holderBars"></div>
+      </div>
+
+      <!-- AI Report -->
+      <div class="card card--ai" id="cardAI">
+        <div class="card-header">
+          <span class="card-label">
+            <span class="ai-badge">AI</span>
+            Intelligence Report
+          </span>
+          <button class="ai-mode-btn" data-mode="pro">🧊 Fun Mode</button>
+        </div>
+        <div class="ai-verdict" id="aiVerdict">
+          <div class="ai-skeleton"></div>
+        </div>
+      </div>
+
+      <!-- Ask YetiScan -->
+      <div class="card card--ask" id="cardAskToken" hidden>
+        <div class="card-header">
+          <span class="card-label">
+            <span class="ai-badge">AI</span>
+            Ask YetiScan
+          </span>
+          <span class="card-meta" id="askTokenMeta">Tap a question below</span>
+        </div>
+        <div class="ask-chips" id="askTokenChips"></div>
+        <div class="ask-answer" id="askTokenAnswer" hidden></div>
+      </div>
+
+    </div>
+
+    <!-- CONTRACT RESULTS -->
+    <div class="result-panel" id="contractResult" hidden>
+      <div class="frost-scan" id="frostScanContract"></div>
+
+      <!-- Contract Overview -->
+      <div class="card" id="cardContract">
+        <div class="card-header">
+          <span class="card-label">Contract Overview</span>
+        </div>
+        <div class="stat-grid">
+          <div class="stat">
+            <span class="stat-label">Package ID</span>
+            <span class="stat-value mono truncate" id="contractPackage">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Modules</span>
+            <span class="stat-value" id="contractModules">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Published</span>
+            <span class="stat-value" id="contractPublished">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Status</span>
+            <span class="stat-value" id="contractStatus">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Snapshot -->
+      <div class="card" id="cardRisk">
+        <div class="card-header">
+          <span class="card-label">Security Snapshot</span>
+        </div>
+        <div class="risk-grid" id="riskGrid"></div>
+      </div>
+
+      <!-- Public Functions -->
+      <div class="card" id="cardFunctions">
+        <div class="card-header">
+          <span class="card-label">Public Functions</span>
+          <span class="card-meta" id="funcMeta"></span>
+        </div>
+        <div class="func-list" id="funcList"></div>
+      </div>
+
+      <!-- AI Explainer -->
+      <div class="card card--ai" id="cardContractAI">
+        <div class="card-header">
+          <span class="card-label">
+            <span class="ai-badge">AI</span>
+            Contract Explainer
+          </span>
+          <button class="ai-mode-btn" data-mode="pro">🧊 Fun Mode</button>
+        </div>
+        <div class="ai-verdict" id="contractAiVerdict">
+          <div class="ai-skeleton"></div>
+        </div>
+      </div>
+
+      <!-- Ask YetiScan -->
+      <div class="card card--ask" id="cardAskContract" hidden>
+        <div class="card-header">
+          <span class="card-label">
+            <span class="ai-badge">AI</span>
+            Ask YetiScan
+          </span>
+          <span class="card-meta" id="askContractMeta">Tap a question below</span>
+        </div>
+        <div class="ask-chips" id="askContractChips"></div>
+        <div class="ask-answer" id="askContractAnswer" hidden></div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>Built on <strong>Sui Network</strong></span>
+      <span class="footer-right">YetiScan · Built by Lord4T6</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
