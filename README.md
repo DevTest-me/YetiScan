@@ -13,7 +13,7 @@
 
 ---
 
-YetiScan is the first AI-powered token and contract scanner built natively for Sui — turning complex blockchain data into simple, actionable insights for builders, traders, and everyday users.
+YetiScan is an AI-powered token and contract scanner built natively for Sui, turning complex blockchain data into simple, actionable insights for builders, traders, and everyday users.
 
 ---
 
