@@ -5,7 +5,7 @@
 const SUI_RPC  = 'https://fullnode.mainnet.sui.io:443';
 const API_BASE = '';
 
-// ── State ──────────────────────────────────
+//  State 
 let currentMode = 'token';
 let aiMode      = 'pro';
 
@@ -23,7 +23,7 @@ const idleMessages = [
 let idleIndex    = 0;
 let idleInterval = null;
 
-// ── DOM refs ───────────────────────────────
+//  DOM refs ─
 const themeToggle    = document.getElementById('themeToggle');
 const modeTabs       = document.querySelectorAll('.mode-tab');
 const addressInput   = document.getElementById('addressInput');
@@ -37,7 +37,7 @@ const stateError     = document.getElementById('stateError');
 const tokenResult    = document.getElementById('tokenResult');
 const contractResult = document.getElementById('contractResult');
 
-// ── Theme ──────────────────────────────────
+//  Theme 
 const savedTheme = localStorage.getItem('yetiscan-theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
@@ -47,7 +47,7 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('yetiscan-theme', next);
 });
 
-// ── Mode tabs ──────────────────────────────
+//  Mode tabs 
 modeTabs.forEach(tab => {
   tab.addEventListener('click', () => {
     modeTabs.forEach(t => t.classList.remove('active'));
@@ -60,7 +60,7 @@ modeTabs.forEach(tab => {
   });
 });
 
-// ── Input events ───────────────────────────
+//  Input events ─
 scanBtn.addEventListener('click', handleScan);
 addressInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleScan(); });
 addressInput.addEventListener('input', () => {
@@ -72,7 +72,7 @@ clearBtn.addEventListener('click', () => {
   showIdle();
 });
 
-// ── AI mode toggle ──────────────────────────
+//  AI mode toggle 
 document.addEventListener('click', e => {
   if (!e.target.classList.contains('ai-mode-btn')) return;
 
@@ -97,10 +97,10 @@ document.addEventListener('click', e => {
   }
 });
 
-// ── Boot ───────────────────────────────────
+//  Boot ─
 showIdle();
 
-// ── Scan handler ───────────────────────────
+//  Scan handler ─
 async function handleScan() {
   const raw = addressInput.value.trim();
   if (!raw) { shake(addressInput); return; }
@@ -115,7 +115,7 @@ async function handleScan() {
   }
 }
 
-// ── UI state machine ───────────────────────
+//  UI state machine ─
 function setUIState(state) {
   stateIdle.hidden      = true;
   stateLoading.hidden   = true;
@@ -162,7 +162,7 @@ function showError(title, msg) {
   setUIState('error');
 }
 
-// ── Idle messages ──────────────────────────
+//  Idle messages 
 function startIdleMessages() {
   stopIdleMessages();
   idleInterval = setInterval(() => {
@@ -182,7 +182,7 @@ function stopIdleMessages() {
   idleInterval = null;
 }
 
-// ── Utilities ──────────────────────────────
+//  Utilities 
 function shake(el) {
   el.style.animation = 'none';
   void el.offsetHeight;
@@ -259,7 +259,7 @@ function triggerFrostScan(id) {
   requestAnimationFrame(() => { void el.offsetWidth; el.classList.add('scanning'); });
 }
 
-// ── Sui RPC ────────────────────────────────
+//  Sui RPC 
 async function suiRPC(method, params) {
   const res = await fetch(SUI_RPC, {
     method: 'POST',
@@ -272,7 +272,7 @@ async function suiRPC(method, params) {
   return data.result;
 }
 
-// ── AI ─────────────────────────────────────
+//  AI ─
 async function askAI(prompt) {
   const res = await fetch(`${API_BASE}/api/analyze`, {
     method: 'POST',
@@ -284,7 +284,7 @@ async function askAI(prompt) {
   return data.result;
 }
 
-// ── Token avatar ───────────────────────────
+//  Token avatar ─
 async function setTokenAvatar(meta, symbol, coinType) {
   const avatar   = document.getElementById('tokenAvatar');
   const initials = (symbol || '?').slice(0, 2).toUpperCase();
@@ -533,7 +533,7 @@ async function runTokenScan(coinType) {
   }
 }
 
-// ── Trust score ────────────────────────────
+//  Trust score 
 function calcTrustScore({ top10Pct, supply }) {
   let score = 75;
   if (top10Pct !== null) {
@@ -924,7 +924,7 @@ function renderAskCard(cardId, chipsId, answerId, metaId, context, type) {
   });
 }
 
-// ── Render AI text ─────────────────────────
+//  Render AI text ─
 function renderAIText(elId, text) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -934,7 +934,7 @@ function renderAIText(elId, text) {
     : '<p>AI analysis unavailable right now. The on-chain data above is accurate.</p>';
 }
 
-// ── Shake keyframe ─────────────────────────
+//  Shake keyframe ─
 const _style = document.createElement('style');
 _style.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}';
 document.head.appendChild(_style);
