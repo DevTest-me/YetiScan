@@ -1,6 +1,6 @@
-/* ============================================
+/* 
    YETISCAN — app.js
-   ============================================ */
+    */
 
 const SUI_RPC  = 'https://fullnode.mainnet.sui.io:443';
 const API_BASE = '';
@@ -23,7 +23,7 @@ const idleMessages = [
 let idleIndex    = 0;
 let idleInterval = null;
 
-//  DOM refs ─
+//  DOM refs 
 const themeToggle    = document.getElementById('themeToggle');
 const modeTabs       = document.querySelectorAll('.mode-tab');
 const addressInput   = document.getElementById('addressInput');
@@ -60,7 +60,7 @@ modeTabs.forEach(tab => {
   });
 });
 
-//  Input events ─
+//  Input events 
 scanBtn.addEventListener('click', handleScan);
 addressInput.addEventListener('keydown', e => { if (e.key === 'Enter') handleScan(); });
 addressInput.addEventListener('input', () => {
@@ -97,10 +97,10 @@ document.addEventListener('click', e => {
   }
 });
 
-//  Boot ─
+//  Boot 
 showIdle();
 
-//  Scan handler ─
+//  Scan handler 
 async function handleScan() {
   const raw = addressInput.value.trim();
   if (!raw) { shake(addressInput); return; }
@@ -115,7 +115,7 @@ async function handleScan() {
   }
 }
 
-//  UI state machine ─
+//  UI state machine 
 function setUIState(state) {
   stateIdle.hidden      = true;
   stateLoading.hidden   = true;
@@ -272,7 +272,7 @@ async function suiRPC(method, params) {
   return data.result;
 }
 
-//  AI ─
+//  AI 
 async function askAI(prompt) {
   const res = await fetch(`${API_BASE}/api/analyze`, {
     method: 'POST',
@@ -284,7 +284,7 @@ async function askAI(prompt) {
   return data.result;
 }
 
-//  Token avatar ─
+//  Token avatar 
 async function setTokenAvatar(meta, symbol, coinType) {
   const avatar   = document.getElementById('tokenAvatar');
   const initials = (symbol || '?').slice(0, 2).toUpperCase();
@@ -325,10 +325,7 @@ async function setTokenAvatar(meta, symbol, coinType) {
   tryNext(0);
 }
 
-// ============================================
 //   TOKEN SCAN
-// ============================================
-
 async function runTokenScan(coinType) {
   showLoading();
   lastTokenContext = null;
@@ -656,10 +653,8 @@ function buildTokenPrompt({ meta, supply, decimals, top10Pct, sampledCount, hold
     '- ' + verdictLine;
 }
 
-// ============================================
-//   CONTRACT SCAN
-// ============================================
 
+//   CONTRACT SCAN
 async function runContractScan(packageId) {
   showLoading();
   lastContractContext = null;
@@ -837,10 +832,8 @@ function buildContractPrompt({ packageId, moduleNames, publicFns, risks, publish
     '- If functions are NONE, say the contract runs silently in the background.';
 }
 
-// ============================================
-//   ASK YETISCAN
-// ============================================
 
+//   ASK YETISCAN
 async function generateAskQuestions(context, type) {
   const prompt = type === 'token'
     ? 'You are YetiScan. Based on this token data, generate exactly 3 short questions a non-technical user would want answered. Make them specific to THIS token\'s actual data. Each question max 8 words. Return ONLY a JSON array of 3 strings, nothing else.\n\nTOKEN: ' + context.meta.name + ' (' + context.meta.symbol + ')\nTrust Score: ' + context.score + '/100\n' + (context.top10Pct !== null ? 'Top holder concentration: ' + fmtPct(context.top10Pct) : 'Holder data unavailable') + '\n' + (context.price ? 'Price: ' + formatPrice(context.price) : '') + '\n' + (context.mcap ? 'Market Cap: $' + fmtNumber(context.mcap) : '')
@@ -924,7 +917,7 @@ function renderAskCard(cardId, chipsId, answerId, metaId, context, type) {
   });
 }
 
-//  Render AI text ─
+//  Render AI text 
 function renderAIText(elId, text) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -934,7 +927,7 @@ function renderAIText(elId, text) {
     : '<p>AI analysis unavailable right now. The on-chain data above is accurate.</p>';
 }
 
-//  Shake keyframe ─
+//  Shake keyframe 
 const _style = document.createElement('style');
 _style.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}';
 document.head.appendChild(_style);
