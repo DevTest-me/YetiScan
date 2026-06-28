@@ -23,7 +23,7 @@ YetiScan is the first AI-powered token and contract scanner built natively for S
 
 - **Trust Score** — Algorithmically calculated from holder concentration, supply distribution, and on-chain signals
 - **Holder Distribution** — Visual breakdown of the top wallets and what percentage of supply they control
-- **Market Snapshot** — Real-time price, market cap, 24h volume, liquidity, and buy/sell pressure from BlockVision
+- **Market Snapshot** — Real-time price, market cap, 24h volume, liquidity, and buy/sell pressure from BlockVision and Birdeye
 - **AI Intelligence Report** — Plain-English analysis of what the data actually means, with Pro and Fun modes powered by Claude
 
 ### Contract Explainer
@@ -41,7 +41,7 @@ YetiScan is the first AI-powered token and contract scanner built natively for S
 |---|---|
 | Frontend | Vanilla JS + CSS (no framework) |
 | Blockchain | Sui RPC (`fullnode.mainnet.sui.io`) |
-| Market Data | BlockVision + Birdeye |
+| Market Data | BlockVision |
 | AI | Claude by Anthropic (`claude-sonnet-4-5`) |
 
 ---
@@ -68,7 +68,6 @@ Copy `.env.example` to `.env` and fill in your keys:
 ```env
 ANTHROPIC_API_KEY=
 BLOCKVISION_API_KEY=
-BIRDEYE_API_KEY=
 ```
 
 ### Run
