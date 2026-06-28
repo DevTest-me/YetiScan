@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// ── POST /api/analyze ──────────────────────────────────────────────────────────
+//  POST /api/analyze 
 // Proxies a prompt to Claude and returns the text result.
 app.post('/api/analyze', async (req, res) => {
   const { prompt, mode } = req.body;
@@ -53,7 +53,7 @@ app.post('/api/analyze', async (req, res) => {
   }
 });
 
-// ── GET /api/coindetail?coinType= ──────────────────────────────────────────────
+//  GET /api/coindetail?coinType= 
 // Fetches price, market cap, holders, and supply from BlockVision.
 app.get('/api/coindetail', async (req, res) => {
   const { coinType } = req.query;
@@ -82,7 +82,7 @@ app.get('/api/coindetail', async (req, res) => {
   }
 });
 
-// ── GET /api/holders?coinType= ─────────────────────────────────────────────────
+//  GET /api/holders?coinType= ─
 // Fetches the top 10 holders for a given coin type from BlockVision.
 app.get('/api/holders', async (req, res) => {
   const { coinType } = req.query;
@@ -113,7 +113,7 @@ app.get('/api/holders', async (req, res) => {
   }
 });
 
-// ── Catch-all → serve index.html ───────────────────────────────────────────────
+//  Catch-all → serve index.html ─
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
