@@ -23,7 +23,7 @@ YetiScan is the first AI-powered token and contract scanner built natively for S
 
 - **Trust Score** — Algorithmically calculated from holder concentration, supply distribution, and on-chain signals
 - **Holder Distribution** — Visual breakdown of the top wallets and what percentage of supply they control
-- **Market Snapshot** — Real-time price, market cap, 24h volume, liquidity, and buy/sell pressure from BlockVision and Birdeye
+- **Market Snapshot** — Real-time price, market cap, 24h volume, liquidity, and buy/sell pressure from BlockVision
 - **AI Intelligence Report** — Plain-English analysis of what the data actually means, with Pro and Fun modes powered by Claude
 
 ### Contract Explainer
